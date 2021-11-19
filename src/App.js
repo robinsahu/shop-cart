@@ -5,7 +5,7 @@ import Homepage from "./pages/homepage/homepage.componenet";
 import ShopPage from "./pages/shop/shop.component";
 import Header from "./Components/header/header.component";
 import SignInAndSignUpPage from "./pages/signin-signup/sign-in-sign-up.component";
-import { auth } from "./firebase/firebase.utils";
+import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 
 class App extends React.Component {
   constructor() {
@@ -17,11 +17,32 @@ class App extends React.Component {
 
   unSubscribeFromOauth = null;
 
+  // componentDidMount() {
+  //   this.unSubscribeFromOauth = auth.onAuthStateChanged((user) => {
+  //     //this is a pretty good method that fetch or gets aware if someone sigin or sign out
+  //     this.setState({ currentUser: user });
+  //     // console.log(user); //if we refresh we get user again in console as it knows that user still signed in
+  //   });
+  // }
   componentDidMount() {
-    this.unSubscribeFromOauth = auth.onAuthStateChanged((user) => {
-      //this is a pretty good method that fetch or gets aware if someone sigin or sign out
-      this.setState({ currentUser: user });
-      // console.log(user); //if we refresh we get user again in console as it knows that user still signed in
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        userRef.onSnapshot((snapShot) => {
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data(),
+            },
+          });
+
+          // console.log(this.state);
+        });
+      }
+
+      this.setState({ currentUser: userAuth });
+      // console.log(this.state.currentUser);
     });
   }
 

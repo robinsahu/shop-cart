@@ -45,9 +45,15 @@ export const firestore = firebase.firestore();
 const provider = new firebase.auth.GoogleAuthProvider();
 provider.setCustomParameters({ prompt: "select_account" }); //we want to triggger always google pop up whenever we use google auth
 
-export const signInWithGoogle = () => {
-  auth.signInWithPopup(provider);
-  console.log(provider);
+export const signInWithGmail = () => {
+  auth
+    .signInWithPopup(provider)
+    .then((res) => {
+      console.log(res.user);
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 };
 
 export default firebase;

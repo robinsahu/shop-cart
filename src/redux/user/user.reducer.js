@@ -1,3 +1,5 @@
+import { userActionTypes } from "./user.types";
+
 const INITIAL_STATE = {
   currentUser: null,
 }; //the first time action triggers we dont have the state so we initialize it as null so reducer take the default value as null
@@ -5,7 +7,7 @@ const INITIAL_STATE = {
 const userReducer = (state = INITIAL_STATE, action) => {
   //we give default value in state if nothing was passed initially
   switch (action.type) {
-    case "SET_CURRENT_USER":
+    case userActionTypes.SET_CURRENT_USER:
       return {
         ...state,
         currentUser: action.payload,

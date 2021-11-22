@@ -4,10 +4,13 @@ import { auth } from "../../firebase/firebase.utils";
 import { connect } from "react-redux";
 
 import { ReactComponent as Logo } from "../../assets/crown.svg";
+import CartIcon from "../cart-icon/cart-icon.component";
+import CartDropdown from "../cart-component/cart.component";
 
 import "./header.style.scss";
 
-const Header = ({ currentUser }) => (
+// const Header = ({ currentUser, hidden }) => ( or
+const Header = (props) => (
   <div className="header">
     <Link className="logo-container" to="/">
       <Logo className="logo" />
@@ -19,7 +22,7 @@ const Header = ({ currentUser }) => (
       <Link className="option" to="/shop">
         CONTACT
       </Link>
-      {currentUser ? (
+      {props.currentUser ? (
         <div className="option" onClick={() => auth.signOut()}>
           SIGN OUT
         </div>
@@ -28,12 +31,15 @@ const Header = ({ currentUser }) => (
           SIGN IN
         </Link>
       )}
+      <CartIcon />
     </div>
+    {props.hidden ? null : <CartDropdown />}
   </div>
 );
 
 const mapStateToProps = (state) => ({
   currentUser: state.user.currentUser,
+  hidden: state.cart.hidden,
 }); //function name could be anything but this is standard with redux . // state is the "rootReducer" high level state
 
 export default connect(mapStateToProps)(Header);

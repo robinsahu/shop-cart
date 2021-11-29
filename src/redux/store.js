@@ -3,8 +3,13 @@ import logger from "redux-logger"; // this is something that is nice to use to d
 
 import rootReducer from "./root-reducer"; //this is rootReducer object
 
-const middlewares = [logger];  //these are some of the middleware function ,methods, object as an arry
+const middlewares = [logger]; //these are some of the middleware function ,methods, object as an arry
 
 const store = createStore(rootReducer, applyMiddleware(...middlewares));
+
+var a;
+a = 0;
+a++;
+console.log(a);
 
 export default store;
